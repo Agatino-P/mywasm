@@ -1,0 +1,10 @@
+<div class="counter-box">
+    <p>Interactive WASM check — current count: <strong>@currentCount</strong></p>
+    <button class="btn" @onclick="IncrementCount">Click me</button>
+</div>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount() => currentCount++;
+}

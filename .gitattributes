@@ -1,0 +1,4 @@
+# Stop Git from converting JS line endings (CRLF->LF). That rewrite changes file
+# hashes, which breaks Blazor's client-side integrity checks so the app won't boot.
+# Must be in place BEFORE the first commit of the JS assets.
+*.js binary

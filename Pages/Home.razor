@@ -1,0 +1,19 @@
+@page "/"
+
+<PageTitle>mywasm</PageTitle>
+
+<h1>Hello from Blazor WASM 👋</h1>
+
+<p>
+    This page is being served as static files from GitHub Pages, built and
+    deployed entirely by a GitHub Actions workflow.
+</p>
+
+<p>Build marker: @BuildStamp</p>
+
+<Counter />
+
+@code {
+    // Handy for proving a fresh deploy actually shipped: bump or template this.
+    private const string BuildStamp = "v1 — initial scaffold";
+}

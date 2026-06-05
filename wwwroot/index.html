@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mywasm</title>
+    <!-- The deploy workflow rewrites this href to "/<repo-name>/" via ghaction-rewrite-base-href. -->
+    <base href="/" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" href="data:," />
+    <!-- SPA on GitHub Pages: restore the deep-link path stashed by 404.html before Blazor routes. -->
+    <script>
+        (function () {
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect !== location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="loading">Loading…</div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+name: Deploy Blazor WASM to GitHub Pages
+
+# Learning notes are inline so this file doubles as a reference.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # lets you trigger a run manually from the Actions tab
+
+# Permissions the GITHUB_TOKEN needs for the Pages deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deployment at a time; don't cancel an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # Change this if you rename the repo. It must match the repo name so the
+  # app's <base href> resolves to https://<user>.github.io/<REPO_NAME>/
+  REPO_NAME: mywasm
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish
+        run: dotnet publish mywasm.csproj -c Release -o release
+
+      # Ensure the _framework folder isn't dropped. (Belt-and-suspenders: the
+      # Actions deploy path doesn't run Jekyll, but this keeps it safe either way.)
+      - name: Add .nojekyll
+        run: touch release/wwwroot/.nojekyll
+
+      # Rewrite <base href="/"> -> "/<repo>/" in the PUBLISHED index.html.
+      # Source is never modified; this only touches the build output.
+      # NOTE: for supply-chain safety, pin this to a commit SHA instead of @v1
+      #       (see https://github.com/SteveSandersonMS/ghaction-rewrite-base-href/releases).
+      - name: Rewrite base href
+        uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+        with:
+          html_path: release/wwwroot/index.html
+          base_href: /${{ env.REPO_NAME }}/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: release/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

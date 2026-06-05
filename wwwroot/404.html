@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <!--
+      GitHub Pages has no server-side routing, so a refresh on /counter returns 404.
+      This page stashes the requested URL and bounces to the app root, where the
+      script in index.html restores it. Based on rafrex/spa-github-pages.
+    -->
+    <script>
+        sessionStorage.redirect = location.href;
+        location.replace(location.origin + location.pathname.split('/').slice(0, 2).join('/') + '/');
+    </script>
+</head>
+
+<body>
+    Redirecting…
+</body>
+
+</html>
