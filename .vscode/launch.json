@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch and Debug Blazor WASM",
+      "type": "blazorwasm",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "url": "http://localhost:5000",
+      "browser": "edge"
+    },
+    {
+      "name": "Attach to Blazor WASM",
+      "type": "blazorwasm",
+      "request": "attach",
+      "cwd": "${workspaceFolder}",
+      "url": "http://localhost:5000"
+    }
+  ]
+}
