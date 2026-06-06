@@ -57,6 +57,17 @@ jobs:
       - name: Publish
         run: dotnet publish src/mywasm/mywasm.csproj -c Release -o release
 
+      - name: Inject config values
+        env:
+          DEMO_VAR: ${{ vars.DEMO_VAR }}
+          DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
+        run: |
+          f=release/wwwroot/appsettings.json
+          tmp=$(mktemp)
+          jq --arg v "$DEMO_VAR" --arg s "$DEMO_SECRET" \
+             '.DemoVar = $v | .DemoSecret = $s' "$f" > "$tmp" && mv "$tmp" "$f"
+          cat "$f"
+
       # Ensure the _framework folder isn't dropped. (Belt-and-suspenders: the
       # Actions deploy path doesn't run Jekyll, but this keeps it safe either way.)
       - name: Add .nojekyll
