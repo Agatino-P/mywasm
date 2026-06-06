@@ -5,15 +5,14 @@
       "name": "Launch and Debug Blazor WASM",
       "type": "blazorwasm",
       "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "url": "http://localhost:5000",
-      "browser": "edge"
+      "cwd": "${workspaceFolder}/src/mywasm",
+      "url": "http://localhost:5000"
     },
     {
       "name": "Attach to Blazor WASM",
       "type": "blazorwasm",
       "request": "attach",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/src/mywasm",
       "url": "http://localhost:5000"
     }
   ]

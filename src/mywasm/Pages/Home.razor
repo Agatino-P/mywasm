@@ -1,5 +1,7 @@
 @page "/"
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Config
+
 <PageTitle>mywasm</PageTitle>
 
 <h1>Hello from Blazor WASM 👋</h1>
@@ -8,6 +10,9 @@
     This page is being served as static files from GitHub Pages, built and
     deployed entirely by a GitHub Actions workflow.
 </p>
+
+<p>DemoVar: @Config["DemoVar"]</p>
+<p>DemoSecret: @Config["DemoSecret"]</p>
 
 <p>Build marker: @BuildStamp</p>
 

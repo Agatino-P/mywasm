@@ -62,7 +62,7 @@ jobs:
       - name: Add .nojekyll
         run: touch release/wwwroot/.nojekyll
 
- # Rewrite <base href="/"> -> "/<repo>/" in the PUBLISHED index.html.
+      # Rewrite <base href="/"> -> "/<repo>/" in the PUBLISHED index.html.
       # Source is never modified; this only touches the build output.
       # Replaces the unmaintained ghaction-rewrite-base-href (was Node 20).
       - name: Rewrite base href
