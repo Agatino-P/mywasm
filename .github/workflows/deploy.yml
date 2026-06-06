@@ -24,7 +24,7 @@ env:
   REPO_NAME: mywasm
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,10 +33,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Publish
-        run: dotnet publish mywasm.csproj -c Release -o release
+        run: dotnet publish src/mywasm/mywasm.csproj -c Release -o release
 
       # Ensure the _framework folder isn't dropped. (Belt-and-suspenders: the
       # Actions deploy path doesn't run Jekyll, but this keeps it safe either way.)
@@ -59,7 +59,7 @@ jobs:
           path: release/wwwroot
 
   deploy:
-    needs: build
+    needs: publish
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
