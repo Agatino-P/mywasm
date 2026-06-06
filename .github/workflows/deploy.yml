@@ -67,6 +67,7 @@ jobs:
       # Replaces the unmaintained ghaction-rewrite-base-href (was Node 20).
       - name: Rewrite base href
         run: |
+          grep -q '<base href="/" />' release/wwwroot/index.html || { echo "base href pattern not found — check index.html"; exit 1; }
           sed -i 's#<base href="/" />#<base href="/${{ env.REPO_NAME }}/" />#' release/wwwroot/index.html
 
       - name: Upload Pages artifact
