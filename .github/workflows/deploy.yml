@@ -62,15 +62,12 @@ jobs:
       - name: Add .nojekyll
         run: touch release/wwwroot/.nojekyll
 
-      # Rewrite <base href="/"> -> "/<repo>/" in the PUBLISHED index.html.
+ # Rewrite <base href="/"> -> "/<repo>/" in the PUBLISHED index.html.
       # Source is never modified; this only touches the build output.
-      # NOTE: for supply-chain safety, pin this to a commit SHA instead of @v1
-      #       (see https://github.com/SteveSandersonMS/ghaction-rewrite-base-href/releases).
+      # Replaces the unmaintained ghaction-rewrite-base-href (was Node 20).
       - name: Rewrite base href
-        uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
-        with:
-          html_path: release/wwwroot/index.html
-          base_href: /${{ env.REPO_NAME }}/
+        run: |
+          sed -i 's#<base href="/" />#<base href="/${{ env.REPO_NAME }}/" />#' release/wwwroot/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
