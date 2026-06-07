@@ -1,1 +1,57 @@
-artifacts-poc.yaml
+name: data-passing-demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  producer:
+    runs-on: ubuntu-latest
+
+    # Expose a value to OTHER jobs (small strings only)
+    outputs:
+      stamp: ${{ steps.gen.outputs.stamp }}
+
+    steps:
+      - name: Generate timestamp — file + env var + step output
+        id: gen
+        run: |
+          NOW="$(date --iso-8601=seconds)"
+
+          # 1) file  -> survives between steps via the shared filesystem
+          echo "$NOW" > timestamp.txt
+
+          # 2) env var -> visible to LATER steps in THIS job
+          echo "STAMP_ENV=$NOW" >> "$GITHUB_ENV"
+
+          # 3) step output -> referenceable by step id, and promotable to a job output
+          echo "stamp=$NOW" >> "$GITHUB_OUTPUT"
+
+          echo "Generated: $NOW"
+
+      - name: Read all three back in a LATER step
+        run: |
+          echo "From file:         $(cat timestamp.txt)"
+          echo "From \$GITHUB_ENV:  $STAMP_ENV"
+          echo "From step output:  ${{ steps.gen.outputs.stamp }}"
+
+      - name: Upload the file as an artifact (the FILE path between jobs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: the-timestamp
+          path: timestamp.txt
+
+  consumer:
+    runs-on: ubuntu-latest
+    needs: producer
+    steps:
+      - name: Read the JOB OUTPUT (string — no download needed)
+        run: |
+            echo "Job output from producer: ${{ needs.producer.outputs.stamp }}"
+
+      - name: Download the artifact (the FILE)
+        uses: actions/download-artifact@v4
+        with:
+          name: the-timestamp
+
+      - name: Read the file produced by the other job
+        run: cat timestamp.txt
