@@ -49,7 +49,7 @@ jobs:
             echo "Job output from producer: ${{ needs.producer.outputs.stamp }}"
 
       - name: before downloading
-        run: ls -al timestamp.txt
+        run: ls -al timestamp.txt || echo "File not found"
 
       - name: Download the artifact (the FILE)
         uses: actions/download-artifact@v4
