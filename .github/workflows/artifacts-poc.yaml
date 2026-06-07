@@ -9,11 +9,11 @@ jobs:
 
     # Expose a value to OTHER jobs (small strings only)
     outputs:
-      producer_job_time_stamp: ${{ steps.gen.outputs.generate_step_timestamp }}
+      producer_job_time_stamp: ${{ steps.generate.outputs.generate_step_timestamp }}
 
     steps:
       - name: Generate timestamp — file + env var + step output
-        id: gen
+        id: generate
         run: |
           NOW="$(date --iso-8601=seconds)"
 
@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "From file:         $(cat timestamp.txt)"
           echo "From \$GITHUB_ENV:  $STAMP_ENV"
-          echo "From step output:  ${{ steps.gen.outputs.generate_step_timestamp }}"
+          echo "From step output:  ${{ steps.generate.outputs.generate_step_timestamp }}"
 
       - name: Upload the file as an artifact (the FILE path between jobs)
         uses: actions/upload-artifact@v7
