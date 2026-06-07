@@ -35,7 +35,7 @@ jobs:
           echo "From step output:  ${{ steps.gen.outputs.stamp }}"
 
       - name: Upload the file as an artifact (the FILE path between jobs)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: the-timestamp
           path: timestamp.txt
@@ -52,7 +52,7 @@ jobs:
         run: ls -al timestamp.txt || echo "File not found"
 
       - name: Download the artifact (the FILE)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: the-timestamp
 
