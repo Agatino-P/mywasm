@@ -9,7 +9,7 @@ jobs:
 
     # Expose a value to OTHER jobs (small strings only)
     outputs:
-      stamp: ${{ steps.gen.outputs.stamp }}
+      producer_job_time_stamp: ${{ steps.gen.outputs.generate_step_timestamp }}
 
     steps:
       - name: Generate timestamp — file + env var + step output
@@ -24,7 +24,7 @@ jobs:
           echo "STAMP_ENV=$NOW" >> "$GITHUB_ENV"
 
           # 3) step output -> referenceable by step id, and promotable to a job output
-          echo "stamp=$NOW" >> "$GITHUB_OUTPUT"
+          echo "generate_step_timestamp=$NOW" >> "$GITHUB_OUTPUT"
 
           echo "Generated: $NOW"
 
@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "From file:         $(cat timestamp.txt)"
           echo "From \$GITHUB_ENV:  $STAMP_ENV"
-          echo "From step output:  ${{ steps.gen.outputs.stamp }}"
+          echo "From step output:  ${{ steps.gen.outputs.generate_step_timestamp }}"
 
       - name: Upload the file as an artifact (the FILE path between jobs)
         uses: actions/upload-artifact@v7
@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: Read the JOB OUTPUT (string — no download needed)
         run: |
-            echo "Job output from producer: ${{ needs.producer.outputs.stamp }}"
+            echo "Job output from producer: ${{ needs.producer.outputs.producer_job_time_stamp }}"
 
       - name: before downloading
         run: ls -al timestamp.txt || echo "File not found"
