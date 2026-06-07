@@ -48,6 +48,9 @@ jobs:
         run: |
             echo "Job output from producer: ${{ needs.producer.outputs.stamp }}"
 
+      - name: before downloading
+        run: ls -al timestamp.txt
+
       - name: Download the artifact (the FILE)
         uses: actions/download-artifact@v4
         with:
