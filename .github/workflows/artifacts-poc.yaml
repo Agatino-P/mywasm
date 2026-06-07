@@ -22,9 +22,11 @@ jobs:
 
           # 2) env var -> visible to LATER steps in THIS job
           echo "STAMP_ENV=$NOW" >> "$GITHUB_ENV"
+          echo "GITHUB_ENV is $GITHUB_ENV"
 
           # 3) step output -> referenceable by step id, and promotable to a job output
           echo "generate_step_timestamp=$NOW" >> "$GITHUB_OUTPUT"
+          echo "GITHUB_OUTPUT is $GITHUB_OUTPUT"
 
           echo "Generated: $NOW"
 
