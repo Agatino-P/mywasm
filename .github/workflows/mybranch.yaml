@@ -1,0 +1,14 @@
+name: specific branch (mybranch)
+
+on:
+  push:
+    branches: mybranch
+
+jobs:
+  poc:
+    runs-on: ubuntu-latest
+
+  
+    steps:
+      - name: Generate timestamp
+        run: date --iso-8601=seconds
