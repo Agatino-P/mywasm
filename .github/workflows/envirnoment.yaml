@@ -1,7 +1,13 @@
+name: environment-demo
+
+on:
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: TestEnvironment        # <-- targeting this environment is what scopes the lookup
     steps:
       - name: Show the environment-scoped var
-        run: echo "Value: ${{ vars.ENVIRONMENT_VAR }}"
+        run: |
+          echo "Value: ${{ vars.ENVIRONMENT_VAR }}"
