@@ -2,6 +2,7 @@ name: environment-demo
 
 on:
   workflow_dispatch:
+  push: 
 
 jobs:
   deploy:
