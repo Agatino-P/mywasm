@@ -10,4 +10,4 @@ jobs:
     steps:
       - name: Show the environment-scoped var
         run: |
-          echo "Value: ${{ vars.ENVIRONMENT_VAR }}"
+          echo "Value of vars.ENVIRONMENT_VAR: ${{ vars.ENVIRONMENT_VAR }}"
